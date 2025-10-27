@@ -256,3 +256,12 @@ function updateHUD() {
     "#timecount"
   ).textContent = `Time: ${elapsedTime.toFixed(1)}s`;
 }
+
+function resetGame() {
+  gameRunning = true;
+  health = 100;
+  score = 0;
+  kills = 0;
+  elapsedTime = 0;
+  updateHUD();
+}
