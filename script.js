@@ -73,7 +73,7 @@ function numberOfEnemies() {
   // TODO: need to return the number of actual enemies, not the size of the array
   let actualenemies = 0;
   for (let enemy of enemies) {
-    if (!enemy) actualenemies++;
+    if (enemy) actualenemies++;
   }
   return actualenemies;
 }
