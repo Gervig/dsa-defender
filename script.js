@@ -42,7 +42,7 @@ function resetGame() {
 
 // the list of enemies is an array of size 5 - but it could be larger ...
 // TODO: change number of enemies if needed
-const enemies = new StaticArray(15);
+const enemies = new StaticArray(20);
 
 function createInitialEnemies() {
   // create five enemies
@@ -150,9 +150,12 @@ function killEnemy(enemy) {
   }
   //TODO: spawn new enemies, because it's fun!
   let nullenemies = enemies.length - numberOfEnemies();
-  // initializes a number of new enemies to be spawned, between 1 and all null enemies in the array
-  let newenemies = Math.floor(Math.random() * nullenemies) + 1;
+  // initializes a number of new enemies to be spawned
+  //TODO: change the logic of spawning for difficulty
+  let newenemies = Math.floor(Math.random() * nullenemies/2);
   for (let i = 0; i < newenemies; i++) spawnNewEnemy();
+  console.log(`Actual enemies: ${numberOfEnemies()}`);
+  
 }
 
 // display an enemy's visual representation
