@@ -30,6 +30,10 @@ function resetGame() {
   gameRunning = true;
   health = 100;
   score = 0;
+  kills = 0;
+  elapsedTime = 0;
+  updateHUD();
+  displayHealth();
 }
 
 // **************************************
@@ -38,7 +42,7 @@ function resetGame() {
 
 // the list of enemies is an array of size 5 - but it could be larger ...
 // TODO: change number of enemies if needed
-const enemies = new StaticArray(8);
+const enemies = new StaticArray(15);
 
 function createInitialEnemies() {
   // create five enemies
@@ -209,9 +213,10 @@ function loop() {
   }
 
   // Check for game over
-  if (health <= 0) {
+  if (health <= 0 && gameRunning) {
     console.log("GAME OVER");
     gameRunning = false;
+    document.querySelector("#resetButton").hidden = false;
   }
 
   // Check for level complete
@@ -257,11 +262,21 @@ function updateHUD() {
   ).textContent = `Time: ${elapsedTime.toFixed(1)}s`;
 }
 
-function resetGame() {
-  gameRunning = true;
-  health = 100;
-  score = 0;
-  kills = 0;
-  elapsedTime = 0;
-  updateHUD();
-}
+const resetButton = document.querySelector("#resetButton");
+resetButton.addEventListener("click", () => {
+  resetGame();
+  resetButton.hidden = true;
+
+  for (let i = 0; i < enemies.length; i++) {
+    enemies[i] = null;
+  }
+
+  // clear visuals
+  document.querySelector("#enemies").innerHTML = "";
+
+  // spawn new enemies
+  createInitialEnemies();
+
+  last = 0;
+  requestAnimationFrame(loop);
+});

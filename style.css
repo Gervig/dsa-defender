@@ -27,7 +27,7 @@ body {
   top: 0;
   font-size: 64px;
   cursor: crosshair;
-  transform: translate( calc(var(--x) * 1px), calc(var(--y) * 1px) );
+  transform: translate(calc(var(--x) * 1px), calc(var(--y) * 1px));
 }
 
 #healthbar {
@@ -56,7 +56,7 @@ body {
 
 /* Effects */
 .shake {
-  animation: shake .3s linear 2;
+  animation: shake 0.3s linear 2;
 }
 
 @keyframes shake {
@@ -78,13 +78,13 @@ body {
 }
 
 .crash {
-  animation: flash .5s ease-in alternate 4;
+  animation: flash 0.5s ease-in alternate 4;
 }
 
 .crash::before {
   position: absolute;
   content: "⚡";
-  animation: flash .5s ease-in alternate 4;
+  animation: flash 0.5s ease-in alternate 4;
 }
 
 @keyframes flash {
@@ -99,14 +99,14 @@ body {
 .explode::before {
   position: absolute;
   content: "💥";
-  left: -.15em;
-  top: -.12em;
+  left: -0.15em;
+  top: -0.12em;
   font-size: 130%;
-  animation: flash .25s ease-in alternate 3;
+  animation: flash 0.25s ease-in alternate 3;
 }
 
 .explode {
-  animation: flash 2s .5s ease-in reverse 1 forwards;
+  animation: flash 2s 0.5s ease-in reverse 1 forwards;
 }
 
 #hud {
@@ -122,4 +122,24 @@ body {
   padding: 8px 12px;
   border-radius: 12px;
   z-index: 10;
+}
+
+#controls {
+  margin-top: 20px;
+  text-align: center;
+}
+
+#resetButton {
+  font-size: 18px;
+  padding: 10px 20px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+#resetButton:hover {
+  background-color: #45a049;
 }
