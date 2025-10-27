@@ -35,7 +35,7 @@ function resetGame() {
 
 // the list of enemies is an array of size 5 - but it could be larger ...
 // TODO: change number of enemies if needed
-const enemies = new StaticArray(20);
+const enemies = new StaticArray(8);
 
 function createInitialEnemies() {
   // create five enemies
@@ -65,7 +65,7 @@ function removeEnemy(enemy) {
       enemies[i] = null;
       return;
     }
-  }  
+  }
 }
 
 // returns the number of enemy objects in the list of enemies
@@ -138,6 +138,11 @@ function killEnemy(enemy) {
     enemy.visual.remove();
     removeEnemy(enemy);
   }
+  //TODO: spawn new enemies, because it's fun!
+  let nullenemies = enemies.length - numberOfEnemies();
+  // initializes a number of new enemies to be spawned, between 1 and all null enemies in the array
+  let newenemies = Math.floor(Math.random() * nullenemies) + 1;
+  for (let i = 0; i < newenemies; i++) spawnNewEnemy();
 }
 
 // display an enemy's visual representation
@@ -200,11 +205,12 @@ function loop() {
     gameRunning = false;
   }
 
+  //TODO: Figure out why this completes game on first kill
   // Check for level complete
-  if (numberOfEnemies() <= 0) {
-    console.log("LEVEL COMPLETE");
-    gameRunning = false;
-  }
+  // if (numberOfEnemies() <= 0) {
+  //   console.log("LEVEL COMPLETE");
+  //   gameRunning = false;
+  // }
 
   // ****
   // Loop through all enemies - and update their visuals
