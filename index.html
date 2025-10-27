@@ -1,24 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DSA-Defender</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <h1>DSA-Defender</h1>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DSA-Defender</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <h1>DSA-Defender</h1>
 
-  <div id="gamefield">
-    <div id="ground"></div>
-    <div id="enemies"></div>
-    <div id="healthbar">
-      <div id="bar">
-        <div id="health"></div>
+    <div id="gamefield">
+      <div id="ground"></div>
+      <div id="enemies"></div>
+      <div id="healthbar">
+        <div id="bar">
+          <div id="health"></div>
+        </div>
+      </div>
+
+      <div id="hud">
+        <span id="killcount">Kills: 0</span>
+        <span id="timecount">Time: 0.0s</span>
       </div>
     </div>
-  </div>
-  
-  <script src="script.js" type="module"></script>
-</body>
+
+    <script src="script.js" type="module"></script>
+  </body>
 </html>

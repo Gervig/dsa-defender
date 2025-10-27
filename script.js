@@ -2,6 +2,9 @@ import StaticArray from "./StaticArray.js";
 
 window.addEventListener("load", start);
 
+let kills = 0;
+let elapsedTime = 0;
+
 // Hardcoded sizes - should probably be dynamic with regards to the CSS ...
 const gamesizes = {
   width: 800,
@@ -54,7 +57,9 @@ function spawnNewEnemy() {
       return enemy;
     }
   }
-  return enemy;
+  // Array is full → remove the just-created enemy visual
+  enemy.visual.remove();
+  return null;
 }
 
 // removes an enemy object from the list of enemies
@@ -135,6 +140,7 @@ function killEnemy(enemy) {
   enemy.visual.addEventListener("animationend", completeKill);
   function completeKill() {
     console.log("complete kill");
+    kills++;
     enemy.visual.remove();
     removeEnemy(enemy);
   }
@@ -182,6 +188,9 @@ function loop() {
   const deltaTime = (now - (last || now)) / 1000;
   last = now;
 
+  elapsedTime += deltaTime;
+  updateHUD();
+
   // ****
   // Loop through all enemies - and move them until the reach the bottom
   // ****
@@ -205,12 +214,11 @@ function loop() {
     gameRunning = false;
   }
 
-  //TODO: Figure out why this completes game on first kill
   // Check for level complete
-  // if (numberOfEnemies() <= 0) {
-  //   console.log("LEVEL COMPLETE");
-  //   gameRunning = false;
-  // }
+  if (numberOfEnemies() <= 0) {
+    console.log("LEVEL COMPLETE");
+    gameRunning = false;
+  }
 
   // ****
   // Loop through all enemies - and update their visuals
@@ -240,4 +248,11 @@ function enemyHitBottom(enemy) {
   shakeScreen();
   // spawn another enemy
   spawnNewEnemy();
+}
+
+function updateHUD() {
+  document.querySelector("#killcount").textContent = `Kills: ${kills}`;
+  document.querySelector(
+    "#timecount"
+  ).textContent = `Time: ${elapsedTime.toFixed(1)}s`;
 }
