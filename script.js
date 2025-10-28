@@ -49,7 +49,7 @@ function resetGame() {
 
 // the list of enemies is an array of size 5 - but it could be larger ...
 // TODO: change number of enemies if needed
-const enemies = new StaticArray(15);
+const enemies = new StaticArray(20);
 
 function createInitialEnemies() {
   // create five enemies
@@ -87,6 +87,7 @@ function removeEnemy(enemy) {
 // returns the number of enemy objects in the list of enemies
 function numberOfEnemies() {
   // TODO: need to return the number of actual enemies, not the size of the array
+  // ide: lav global variable for numOfEnemies, og lad removeEnemy holde styr på antallet
   let actualenemies = 0;
   for (let enemy of enemies) {
     if (enemy) actualenemies++;
