@@ -169,8 +169,20 @@ body {
 }
 
 .enemy {
-  font-size: 8vw; /* scales with viewport width */
-  cursor: crosshair;
   position: absolute;
+  top: 0;
+  font-size: 64px;
+  cursor: crosshair;
   transform: translate(calc(var(--x) * 1px), calc(var(--y) * 1px));
+}
+
+@media (max-width: 480px) {
+  .enemy {
+    font-size: 32px; /* half size for mobile */
+  }
+
+  #gamefield {
+    width: 90vw; /* fit nicely in mobile viewport */
+    height: calc(90vw * 0.75); /* maintain 4:3 aspect ratio */
+  }
 }
