@@ -1,5 +1,12 @@
 import StaticArray from "./StaticArray.js";
 
+function updateGameSize() {
+  const gamefield = document.querySelector("#gamefield");
+  gamesizes.width = gamefield.clientWidth;
+  gamesizes.height = gamefield.clientHeight;
+}
+window.addEventListener("resize", updateGameSize);
+window.addEventListener("load", updateGameSize);
 window.addEventListener("load", start);
 
 let kills = 0;
@@ -42,7 +49,7 @@ function resetGame() {
 
 // the list of enemies is an array of size 5 - but it could be larger ...
 // TODO: change number of enemies if needed
-const enemies = new StaticArray(20);
+const enemies = new StaticArray(15);
 
 function createInitialEnemies() {
   // create five enemies
@@ -152,10 +159,9 @@ function killEnemy(enemy) {
   let nullenemies = enemies.length - numberOfEnemies();
   // initializes a number of new enemies to be spawned
   //TODO: change the logic of spawning for difficulty
-  let newenemies = Math.floor(Math.random() * nullenemies/2);
+  let newenemies = Math.floor((Math.random() * nullenemies) / 2);
   for (let i = 0; i < newenemies; i++) spawnNewEnemy();
   console.log(`Actual enemies: ${numberOfEnemies()}`);
-  
 }
 
 // display an enemy's visual representation
