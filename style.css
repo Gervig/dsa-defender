@@ -156,21 +156,22 @@ body {
 }
 
 #gamefield {
-  /* maintain 4:3 aspect ratio */
-  aspect-ratio: 4 / 3;
-
-  /* scale with screen size */
-  width: min(90vw, 800px); /* max 800px, but shrink if screen smaller */
-  height: auto;
-
+  width: 800px;
+  height: 600px;
   border: 1px solid yellow;
   position: relative;
   overflow: hidden;
+
+  /* center it */
+  transform-origin: top center;
+  margin: 0 auto;
 }
 
+
 .enemy {
-  font-size: 8vw; /* scales with viewport width */
-  cursor: crosshair;
   position: absolute;
+  top: 0;
+  font-size: 64px;
+  cursor: crosshair;
   transform: translate(calc(var(--x) * 1px), calc(var(--y) * 1px));
 }
