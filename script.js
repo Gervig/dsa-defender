@@ -53,6 +53,7 @@ const enemies = new StaticArray(20);
 
 function createInitialEnemies() {
   // create five enemies
+  //O(n)
   for (let i = 0; i < 5; i++) {
     spawnNewEnemy();
   }  
@@ -62,6 +63,7 @@ function createInitialEnemies() {
 function spawnNewEnemy() {
   const enemy = createEnemy();
   // TODO: need to add new enemy to list of enemies, here!
+  //O(n)
   for (let i = 0; i < enemies.length; i++) {
     if (!enemies[i]) {
       enemies.set(i, enemy);
@@ -76,6 +78,7 @@ function spawnNewEnemy() {
 // removes an enemy object from the list of enemies
 function removeEnemy(enemy) {
   // TODO: need to find enemy object in list of enemies, and remove it
+  //O(n)
   for (let i = 0; i < enemies.length; i++) {
     if (enemies[i] === enemy) {
       enemies[i] = null;
@@ -88,6 +91,7 @@ function removeEnemy(enemy) {
 function numberOfEnemies() {
   // TODO: need to return the number of actual enemies, not the size of the array
   // ide: lav global variable for numOfEnemies, og lad removeEnemy holde styr på antallet
+  //O(n)
   let actualenemies = 0;
   for (let enemy of enemies) {
     if (enemy) actualenemies++;
@@ -160,6 +164,7 @@ function killEnemy(enemy) {
   let nullenemies = enemies.length - numberOfEnemies();
   // initializes a number of new enemies to be spawned
   //TODO: change the logic of spawning for difficulty
+  //O(n)
   let newenemies = Math.floor((Math.random() * nullenemies) / 2);
   for (let i = 0; i < newenemies; i++) spawnNewEnemy();
   console.log(`Actual enemies: ${numberOfEnemies()}`);
