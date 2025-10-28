@@ -49,7 +49,7 @@ function resetGame() {
 
 // the list of enemies is an array of size 5 - but it could be larger ...
 // TODO: change number of enemies if needed
-const enemies = new StaticArray(15);
+const enemies = new StaticArray(10);
 
 function createInitialEnemies() {
   // create five enemies
