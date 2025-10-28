@@ -54,7 +54,7 @@ const enemies = new StaticArray(15);
 function createInitialEnemies() {
   // create five enemies
   for (let i = 0; i < 5; i++) {
-    enemies[i] = spawnNewEnemy();
+    spawnNewEnemy();
   }  
 }
 

@@ -6,10 +6,6 @@
     <title>DSA-Defender</title>
     <link rel="stylesheet" id="dynamic-css" href="style.css" />
     <!-- use this script for deployment, not development -->
-    <script>
-      const css = document.getElementById("dynamic-css");
-      css.href = `style.css?v=${Date.now()}`;
-    </script>
     <script type="module">
       import("./script.js?v=" + Date.now());
     </script>
