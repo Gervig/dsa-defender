@@ -155,34 +155,44 @@ body {
   margin: 0;
 }
 
+/* -----------------------------
+   Responsive for mobile
+------------------------------ */
+@media (max-width: 480px) {
+  /* Shrink enemies */
+  .enemy {
+    font-size: 32px;
+  }
+
+  /* Shrink HUD */
+  #hud {
+    font-size: 16px;
+    padding: 4px 8px;
+  }
+
+  /* Wider health bar on mobile */
+  #healthbar #bar {
+    width: 70%;
+  }
+
+  #ground {
+    /* slightly lower and narrower for tiny phones */
+    bottom: -20%;
+    width: 130%;
+    left: -15%;
+  }
+}
+
+/* -----------------------------
+   Gamefield responsive width
+------------------------------ */
 #gamefield {
   /* maintain 4:3 aspect ratio */
   aspect-ratio: 4 / 3;
 
   /* scale with screen size */
-  width: min(90vw, 800px); /* max 800px, but shrink if screen smaller */
+  width: min(90vw, 800px); /* max 800px, shrink on smaller screens */
   height: auto;
 
-  border: 1px solid yellow;
-  position: relative;
-  overflow: hidden;
-}
-
-.enemy {
-  position: absolute;
-  top: 0;
-  font-size: 64px;
-  cursor: crosshair;
-  transform: translate(calc(var(--x) * 1px), calc(var(--y) * 1px));
-}
-
-@media (max-width: 480px) {
-  .enemy {
-    font-size: 32px; /* half size for mobile */
-  }
-
-  #gamefield {
-    width: 90vw; /* fit nicely in mobile viewport */
-    height: calc(90vw * 0.75); /* maintain 4:3 aspect ratio */
-  }
+  margin: 0 auto;
 }
