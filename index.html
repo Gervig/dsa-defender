@@ -4,7 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>DSA-Defender</title>
-    <link rel="stylesheet" href="style.css" />
+    <script>
+      const version = Date.now();
+      document.write(`<link rel="stylesheet" href="style.css?v=${version}" />`);
+    </script>
   </head>
   <body>
     <h1>DSA-Defender</h1>
@@ -28,6 +31,10 @@
       <button id="resetButton" hidden>Restart Game</button>
     </div>
 
-    <script src="script.js" type="module"></script>
+    <script>
+      document.write(
+        `<script type="module" src="script.js?v=${version}"><\\/script>`
+      );
+    </script>
   </body>
 </html>
