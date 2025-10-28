@@ -49,13 +49,13 @@ function resetGame() {
 
 // the list of enemies is an array of size 5 - but it could be larger ...
 // TODO: change number of enemies if needed
-const enemies = new StaticArray(10);
+const enemies = new StaticArray(15);
 
 function createInitialEnemies() {
   // create five enemies
   for (let i = 0; i < 5; i++) {
     enemies[i] = spawnNewEnemy();
-  }
+  }  
 }
 
 // creates a new enemy object, and adds it to the list of enemies
@@ -288,4 +288,6 @@ resetButton.addEventListener("click", () => {
 
   last = 0;
   requestAnimationFrame(loop);
+  console.log(`GAME RESET`);
+  
 });
