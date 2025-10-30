@@ -60,6 +60,26 @@ function spawnNewEnemy() {
   return enemy;
 }
 
+function getEnemy(index) {
+  if (index == 0) {
+    return firstEnemy;
+  }
+  // remove enemy at index
+  let count = 0;
+  let lookAt = firstEnemy;
+  let lastLookAt = null;
+  // kunne sætte index til index - 1
+  while (lookAt != null && count < index) {
+    lastLookAt = lookAt;
+    lookAt = lookAt.next;
+    count++;
+  }
+
+  lastLookAt.next = lookAt.next;
+
+  return lookAt;
+}
+
 // removes an enemy object from the list of enemies
 function removeEnemy(enemy) {
   // TODO: need to find enemy object in list of enemies, and remove it
