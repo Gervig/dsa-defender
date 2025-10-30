@@ -173,17 +173,19 @@ function loop() {
   // ****
   // Loop through all enemies - and move them until the reach the bottom
   // ****
-  for (const enemy of enemies) {
-    // TODO: Only look at actual enemy objects from the list ...
 
+  let lookAt = firstEnemy;
+
+  while (lookAt != null) {
     // ignore enemies who are dying or crashing - so they don't move any further
-    if (!enemy.isFrozen) {
-      enemy.y += enemy.ySpeed * deltaTime;
+    if (!lookAt.isFrozen) {
+      lookAt.y += lookAt.ySpeed * deltaTime;
       // handle enemy hitting bottom
-      if (enemy.y >= gamesizes.height - gamesizes.enemy) {
-        enemyHitBottom(enemy);
+      if (lookAt.y >= gamesizes.height - gamesizes.enemy) {
+        enemyHitBottom(lookAt);
       }
     }
+    lookAt = lookAt.next;
   }
 
   // Check for game over
@@ -201,9 +203,11 @@ function loop() {
   // ****
   // Loop through all enemies - and update their visuals
   // ****
-  for (const enemy of enemies) {
+  lookAt = firstEnemy;
+  while (lookAt != null) {
     // TODO: Only do this for actual enemy objects from the list ...
-    displayEnemy(enemy);
+    displayEnemy(lookAt);
+    lookAt = lookAt.next;
   }
 
   // update health display
