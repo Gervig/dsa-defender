@@ -1,4 +1,4 @@
-/**
+  /**
  * A static array class
  * 
  * This class is a wrapper around a native JavaScript Array object, that
