@@ -1,16 +1,6 @@
 import StaticArray from "./StaticArray.js";
 
-function updateGameSize() {
-  const gamefield = document.querySelector("#gamefield");
-  gamesizes.width = gamefield.clientWidth;
-  gamesizes.height = gamefield.clientHeight;
-}
-window.addEventListener("resize", updateGameSize);
-window.addEventListener("load", updateGameSize);
 window.addEventListener("load", start);
-
-let kills = 0;
-let elapsedTime = 0;
 
 // Hardcoded sizes - should probably be dynamic with regards to the CSS ...
 const gamesizes = {
@@ -37,66 +27,48 @@ function resetGame() {
   gameRunning = true;
   health = 100;
   score = 0;
-  kills = 0;
-  elapsedTime = 0;
-  updateHUD();
-  displayHealth();
 }
 
 // **************************************
 //  ENEMIES - code for handling the list
 // **************************************
 
-// the list of enemies is an array of size 5 - but it could be larger ...
-// TODO: change number of enemies if needed
-const enemies = new StaticArray(20);
+// only reference the first enemy
+let firstEnemy = null;
 
 function createInitialEnemies() {
   // create five enemies
-  //O(n)
   for (let i = 0; i < 5; i++) {
     spawnNewEnemy();
-  }  
+  }
 }
 
 // creates a new enemy object, and adds it to the list of enemies
 function spawnNewEnemy() {
   const enemy = createEnemy();
-  // TODO: need to add new enemy to list of enemies, here!
-  //O(n)
-  for (let i = 0; i < enemies.length; i++) {
-    if (!enemies[i]) {
-      enemies.set(i, enemy);
-      return enemy;
+  if (firstEnemy == null) {
+    firstEnemy = enemy;
+  } else {
+    let lookAt = firstEnemy;
+
+    while (lookAt.next != null) {
+      lookAt = lookAt.next;
     }
+    lookAt.next = enemy;
   }
-  // Array is full → remove the just-created enemy visual
-  enemy.visual.remove();
-  return null;
+
+  return enemy;
 }
 
 // removes an enemy object from the list of enemies
 function removeEnemy(enemy) {
   // TODO: need to find enemy object in list of enemies, and remove it
-  //O(n)
-  for (let i = 0; i < enemies.length; i++) {
-    if (enemies[i] === enemy) {
-      enemies[i] = null;
-      return;
-    }
-  }
 }
 
 // returns the number of enemy objects in the list of enemies
 function numberOfEnemies() {
   // TODO: need to return the number of actual enemies, not the size of the array
-  // ide: lav global variable for numOfEnemies, og lad removeEnemy holde styr på antallet
-  //O(n)
-  let actualenemies = 0;
-  for (let enemy of enemies) {
-    if (enemy) actualenemies++;
-  }
-  return actualenemies;
+  return enemies.length;
 }
 
 // ************************************************
@@ -156,18 +128,9 @@ function killEnemy(enemy) {
   enemy.visual.addEventListener("animationend", completeKill);
   function completeKill() {
     console.log("complete kill");
-    kills++;
     enemy.visual.remove();
     removeEnemy(enemy);
   }
-  //TODO: spawn new enemies, because it's fun!
-  let nullenemies = enemies.length - numberOfEnemies();
-  // initializes a number of new enemies to be spawned
-  //TODO: change the logic of spawning for difficulty
-  //O(n)
-  let newenemies = Math.floor((Math.random() * nullenemies) / 2);
-  for (let i = 0; i < newenemies; i++) spawnNewEnemy();
-  console.log(`Actual enemies: ${numberOfEnemies()}`);
 }
 
 // display an enemy's visual representation
@@ -207,31 +170,28 @@ function loop() {
   const deltaTime = (now - (last || now)) / 1000;
   last = now;
 
-  elapsedTime += deltaTime;
-  updateHUD();
-
   // ****
   // Loop through all enemies - and move them until the reach the bottom
   // ****
-  for (const enemy of enemies) {
-    // TODO: Only look at actual enemy objects from the list ...
-    if (enemy) {
-      // ignore enemies who are dying or crashing - so they don't move any further
-      if (!enemy.isFrozen) {
-        enemy.y += enemy.ySpeed * deltaTime;
-        // handle enemy hitting bottom
-        if (enemy.y >= gamesizes.height - gamesizes.enemy) {
-          enemyHitBottom(enemy);
-        }
+
+  let lookAt = firstEnemy;
+
+  while (lookAt != null) {
+    // ignore enemies who are dying or crashing - so they don't move any further
+    if (!lookAt.isFrozen) {
+      lookAt.y += lookAt.ySpeed * deltaTime;
+      // handle enemy hitting bottom
+      if (lookAt.y >= gamesizes.height - gamesizes.enemy) {
+        enemyHitBottom(lookAt);
       }
     }
+    lookAt = lookAt.next;
   }
 
   // Check for game over
-  if (health <= 0 && gameRunning) {
+  if (health <= 0) {
     console.log("GAME OVER");
     gameRunning = false;
-    document.querySelector("#resetButton").hidden = false;
   }
 
   // Check for level complete
@@ -243,9 +203,11 @@ function loop() {
   // ****
   // Loop through all enemies - and update their visuals
   // ****
-  for (const enemy of enemies) {
+  lookAt = firstEnemy;
+  while (lookAt != null) {
     // TODO: Only do this for actual enemy objects from the list ...
-    if (enemy) displayEnemy(enemy);
+    displayEnemy(lookAt);
+    lookAt = lookAt.next;
   }
 
   // update health display
@@ -269,31 +231,3 @@ function enemyHitBottom(enemy) {
   // spawn another enemy
   spawnNewEnemy();
 }
-
-function updateHUD() {
-  document.querySelector("#killcount").textContent = `Kills: ${kills}`;
-  document.querySelector(
-    "#timecount"
-  ).textContent = `Time: ${elapsedTime.toFixed(1)}s`;
-}
-
-const resetButton = document.querySelector("#resetButton");
-resetButton.addEventListener("click", () => {
-  resetGame();
-  resetButton.hidden = true;
-
-  for (let i = 0; i < enemies.length; i++) {
-    enemies[i] = null;
-  }
-
-  // clear visuals
-  document.querySelector("#enemies").innerHTML = "";
-
-  // spawn new enemies
-  createInitialEnemies();
-
-  last = 0;
-  requestAnimationFrame(loop);
-  console.log(`GAME RESET`);
-  
-});
