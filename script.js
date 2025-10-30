@@ -56,7 +56,7 @@ function createInitialEnemies() {
   //O(n)
   for (let i = 0; i < 5; i++) {
     spawnNewEnemy();
-  }  
+  }
 }
 
 // creates a new enemy object, and adds it to the list of enemies
@@ -232,6 +232,7 @@ function loop() {
     console.log("GAME OVER");
     gameRunning = false;
     document.querySelector("#resetButton").hidden = false;
+    tryAddHighScore(score);
   }
 
   // Check for level complete
@@ -295,5 +296,60 @@ resetButton.addEventListener("click", () => {
   last = 0;
   requestAnimationFrame(loop);
   console.log(`GAME RESET`);
-  
 });
+
+// ==== GOOGLE SHEETS LEADERBOARD ====
+const SHEETS_URL =
+  "https://script.google.com/macros/s/AKfycbyC8SkANXAA2zPTCChzZ_AHi8oEl2Dc8dpHpCP5Gzt3IO6hXgU9sTDCPloMBj7SQ4GeWw/exec"; // paste your deployed Apps Script URL here
+
+async function getHighScores() {
+  const res = await fetch(SHEETS_URL);
+  if (!res.ok) throw new Error("Network error getting highscores");
+  return await res.json(); // array of {name, score, date}
+}
+
+async function submitHighScore(name, score) {
+  // Basic sanitization
+  const safeName = encodeURIComponent((name || "???").slice(0, 10));
+  const url = `${SHEETS_URL}?action=submit&name=${safeName}&score=${Number(
+    score
+  )}`;
+  const res = await fetch(url);
+  if (!res.ok) throw new Error("Network error submitting score");
+  return await res.json(); // { ok: true }
+}
+
+async function tryAddHighScore(score) {
+  try {
+    const scores = await getHighScores();
+    const lowest = scores.length ? scores[scores.length - 1].score : 0;
+    if (scores.length < 10 || score > lowest) {
+      const name = prompt(
+        "New High Score! Enter initials (max 10 chars):",
+        "AAA"
+      );
+      if (name) {
+        await submitHighScore(name.toUpperCase().slice(0, 10), score);
+      }
+    }
+    // then refresh display
+    showHighScores(); // implement to call getHighScores() and update DOM
+  } catch (err) {
+    console.error("Leaderboard error:", err);
+    // optionally fall back to localStorage or show an error message
+  }
+}
+
+async function showHighScores() {
+  const scores = await getHighScores();
+  const container =
+    document.querySelector("#highScores") || document.createElement("div");
+  container.id = "highScores";
+  container.innerHTML = `
+    <h3>🏆 High Scores</h3>
+    <ol>
+      ${scores.map((s) => `<li>${s.name} — ${s.score}</li>`).join("")}
+    </ol>
+  `;
+  document.body.appendChild(container);
+}
